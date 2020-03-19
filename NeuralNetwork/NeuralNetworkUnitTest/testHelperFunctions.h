@@ -1,3 +1,5 @@
+//Copyright(C) 2020 "Daniel Bramblett" <daniel.r.bramblett@gmail.com>
+
 #ifndef TEST_HELPER_FUNCTIONS
 #define TEST_HELPER_FUNCTIONS
 

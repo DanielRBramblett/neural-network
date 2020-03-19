@@ -1,3 +1,4 @@
+//Copyright(C) 2020 "Daniel Bramblett" <daniel.r.bramblett@gmail.com>
 #include "stdafx.h"
 #include "testNeuralNetwork.h"
 

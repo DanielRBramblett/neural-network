@@ -1,9 +1,11 @@
+//Copyright(C) 2020 "Daniel Bramblett" <daniel.r.bramblett@gmail.com>
+
 #ifndef UNIT_TEST_TEST_CELL
 #define UNIT_TEST_TEST_CELL
 
 #include "../NeuralNetwork/neuralNetwork.h"
 
-class testNeuralNetwork : public neuralNetwork
+class testNeuralNetwork : public NeuralNetwork::neuralNetwork
 {
 public:
 	class testCell : public cell

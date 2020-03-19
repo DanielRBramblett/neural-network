@@ -1,3 +1,4 @@
+//Copyright(C) 2020 "Daniel Bramblett" <daniel.r.bramblett@gmail.com>
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "testNeuralNetwork.h"
@@ -11,6 +12,7 @@
 #include<string>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace NeuralNetwork;
 
 //TODO: Refactor to move variables to fields to prevent initialize new variables for each test.
 /*TODO: Figure out how to split each class into its own file to shorten file lengths.
