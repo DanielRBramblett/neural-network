@@ -57,6 +57,9 @@ namespace NeuralNetwork
 			std::list<int> connections;
 		};
 		/*Nested neuron class that represents a neuron in a neural network.*/
+		//TODO: Add in final keyword and rewrite test neuralNetwork class.
+		//TODO: Consider keeping pointers to the vectors of connected cell's values and error to prevent
+		//looping.
 		class neuron : public cell
 		{
 		public:

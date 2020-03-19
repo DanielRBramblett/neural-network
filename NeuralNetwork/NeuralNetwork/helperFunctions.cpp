@@ -21,7 +21,7 @@ namespace NeuralNetwork
 #else
 		for (; targetIt != target.end(); ++targetIt, ++refIt)
 		{
-			*targetIt += *refIt * weight;
+			*targetIt += *refIt * multiplier;
 		}
 #endif
 	}

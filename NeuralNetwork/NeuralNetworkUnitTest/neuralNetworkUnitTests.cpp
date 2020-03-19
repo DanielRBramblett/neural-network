@@ -197,6 +197,7 @@ namespace NeuralNetworkUnitTest
 				Assert::AreEqual(a.getActivationFunction().activationFunction(currentPoint), testAct.activationFunction(currentPoint));
 			}
 		}
+		//Tests that the addConnection() and removeConnection() function correctly.
 		TEST_METHOD(addRemoveConnection)
 		{
 			testNeuralNetwork::testNeuron a(true, 0);
@@ -339,6 +340,8 @@ namespace NeuralNetworkUnitTest
 			Assert::AreEqual((int)testWeightList.size(), 0);
 			Assert::AreEqual((int)testPreviousWeightList.size(), 0);
 		}
+		/*Tests the backPropagation function when further error propagation is needed and the batchsize
+		 *is greater then one. */
 		TEST_METHOD(backwardPropagation)
 		{
 			testNeuralNetwork::testNeuron neuronTest(true, 2);
@@ -414,6 +417,69 @@ namespace NeuralNetworkUnitTest
 			Assert::IsTrue(floatInBounds(neuronTest.getBias(), 0.6f + (DEFAULT_LEARNING_RATE * 0.05f), FLOAT_TEST_RANGE));
 			Assert::IsTrue(floatInBounds(neuronTest.getPreviousBiasChange(), DEFAULT_LEARNING_RATE * 0.05f, FLOAT_TEST_RANGE));
 		}
+
+		/*Tests the backPropagation() function with a batch size of one and the error shouldn't 
+		 *backpropagate further. */
+		TEST_METHOD(backwardPropagationOneBatch)
+		{
+			testNeuralNetwork::testNeuron neuronTest(false, 2);
+			neuronTest.addConnection(0, 0.4f);
+			neuronTest.addConnection(3, 0.7f);
+			neuronTest.setBias(0.6f);
+			std::list<std::vector<float>> testValues;
+			std::list<std::vector<float>> testError;
+			std::list<float> testList;
+			std::mutex testMutex;
+			std::vector<float> neuronError(1);
+			neuronError[0] = -0.4f;
+			for (int i = 0; i < 6; ++i)
+			{
+				std::vector<float> temp(1);
+				temp[0] = 0.1f * (1.0f + i);
+				testValues.push_back(temp);
+				if (i == 2)
+				{
+					testError.push_back(neuronError);
+				}
+				else
+				{
+					testError.push_back(std::vector<float>(1, 0.0f));
+				}
+			}
+
+			neuronTest.backwardPropagate(testValues, 1, testError, testMutex);
+
+			//Checks to make sure the values are not changed.
+			std::list<std::vector<float>>::iterator valueIt = testValues.begin();
+			for (int i = 0; i < 6; ++i, ++valueIt)
+			{
+				Assert::AreEqual((*valueIt)[0], 0.1f * (1.0f + i));
+			}
+
+			//Checks to make sure the error wasn't propagated.
+			std::list<std::vector<float>>::iterator errorIt = testError.begin();
+			for (int i = 0; i < 6; ++i, ++errorIt)
+			{
+				for (std::vector<float>::iterator currentErrorIt = errorIt->begin(); currentErrorIt != errorIt->end(); ++currentErrorIt)
+				{
+					Assert::AreEqual(*currentErrorIt, 0.0f);
+				}
+			}
+
+			//Checks the weights are correct.
+			neuronTest.getWeights(testList);
+			Assert::IsTrue(floatInBounds(*testList.begin(), 0.4f + (DEFAULT_LEARNING_RATE * -0.0084f), FLOAT_TEST_RANGE));
+			Assert::IsTrue(floatInBounds(*(++testList.begin()), 0.7f + (DEFAULT_LEARNING_RATE * -0.0336f), FLOAT_TEST_RANGE));
+		
+			//Checks the previous weight changes are correct.
+			neuronTest.getPreviousWeightChanges(testList);
+			Assert::IsTrue(floatInBounds(*testList.begin(), DEFAULT_LEARNING_RATE * -0.0084f, FLOAT_TEST_RANGE));
+			Assert::IsTrue(floatInBounds(*(++testList.begin()), DEFAULT_LEARNING_RATE * -0.0336f, FLOAT_TEST_RANGE));
+
+			//Checks the bias and the previous change were updated correctly.
+			Assert::IsTrue(floatInBounds(neuronTest.getBias(), 0.6f + (DEFAULT_LEARNING_RATE * -0.4f), FLOAT_TEST_RANGE));
+			Assert::IsTrue(floatInBounds(neuronTest.getPreviousBiasChange(), DEFAULT_LEARNING_RATE * -0.4f, FLOAT_TEST_RANGE));
+		}
 		TEST_METHOD(forwardPropagation)
 		{
 			//TODO: Not setting the bias so this test shouldn't pass.
@@ -446,6 +512,7 @@ namespace NeuralNetworkUnitTest
 				}
 			}
 		}
+
 		TEST_METHOD(setBias)
 		{
 			testNeuralNetwork::testNeuron a(true, 0);
