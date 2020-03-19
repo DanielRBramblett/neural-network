@@ -33,4 +33,6 @@
 
 # Visual Studio Files
 *.db
+*.log
 *.opendb
+*.tlog

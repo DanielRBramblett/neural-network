@@ -115,6 +115,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="activationFunctions.h" />
+    <ClInclude Include="helperFunctions.h" />
+    <ClInclude Include="neuralNetwork.h" />
+    <ClInclude Include="neuralNetworkErrors.h" />
+    <ClInclude Include="preprocessorFlags.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="activationFunctions.cpp" />
+    <ClCompile Include="helperFunctions.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="neuralNetwork.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
