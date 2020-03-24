@@ -368,6 +368,19 @@ namespace NeuralNetwork
 		}
 	}
 
+	void neuralNetwork::neuron::copy(cell *&target)
+	{
+		//TODO: Add an exception if a non-null pointer is given.
+		if (!target)
+		{
+
+		}
+		else
+		{
+			target = new neuron(*this);
+		}
+	}
+
 	void neuralNetwork::neuron::forwardPropagate(std::list<std::vector<float>> &batchInput, int batchSize)
 	{
 #if SAFE_CELL
@@ -645,5 +658,73 @@ namespace NeuralNetwork
 		}
 #endif
 		connectionWeights = ref;
+	}
+
+	//neuralNetwork:
+	neuralNetwork::neuralNetwork():inputNodes(0), outputNodes(0)
+	{
+
+	}
+
+	neuralNetwork::neuralNetwork(const neuralNetwork &ref) : inputNodes(ref.inputNodes), outputNodes(ref.outputNodes)
+	{
+		cell *tempCell = NULL;
+		for (std::list<std::list<cell*>>::const_iterator scheduleIt = ref.schedule.begin(); scheduleIt != ref.schedule.end(); ++scheduleIt)
+		{
+			schedule.push_back(std::list<cell*>());
+			for (std::list<cell*>::const_iterator it = scheduleIt->begin(); it != scheduleIt->end(); ++it)
+			{
+				(*it)->copy(tempCell);
+				schedule.back().push_back(tempCell);
+				tempCell = NULL;
+			}
+		}
+	}
+
+	neuralNetwork::~neuralNetwork()
+	{
+		inputNodes = 0;
+		outputNodes = 0;
+		for (std::list<std::list<cell*>>::iterator scheduleIt = schedule.begin(); scheduleIt != schedule.end(); ++scheduleIt)
+		{
+			for (std::list<cell*>::iterator it = scheduleIt->begin(); it != scheduleIt->end(); ++it)
+			{
+				delete *it;
+			}
+		}
+		schedule.clear();
+	}
+
+	neuralNetwork& neuralNetwork::operator=(const neuralNetwork &ref)
+	{
+		cell *tempCell = NULL;
+		if (this != &ref)
+		{
+			inputNodes = ref.inputNodes;
+			outputNodes = ref.outputNodes;
+
+			//TODO: Could resize the list to match the reference and clear the list before copying.
+			//Deletes the schedule and creates a copy of the list.
+			for (std::list<std::list<cell*>>::iterator scheduleIt = schedule.begin(); scheduleIt != schedule.end(); ++scheduleIt)
+			{
+				for (std::list<cell*>::iterator it = scheduleIt->begin(); it != scheduleIt->end(); ++it)
+				{
+					delete *it;
+				}
+			}
+			schedule.clear();
+
+			for (std::list<std::list<cell*>>::const_iterator scheduleIt = ref.schedule.begin(); scheduleIt != ref.schedule.end(); ++scheduleIt)
+			{
+				schedule.push_back(std::list<cell*>());
+				for (std::list<cell*>::const_iterator it = scheduleIt->begin(); it != scheduleIt->end(); ++it)
+				{
+					(*it)->copy(tempCell);
+					schedule.back().push_back(tempCell);
+					tempCell = NULL;
+				}
+			}
+		}
+		return *this;
 	}
 }

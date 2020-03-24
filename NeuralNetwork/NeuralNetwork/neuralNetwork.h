@@ -22,10 +22,19 @@ namespace NeuralNetwork
 	static float DEFAULT_MOMENTUM = 0.9f;
 	static float DEFAULT_WEIGHT_DECAY = 0.0f;
 
+	enum lossType
+	{
+		mSE = 0, categoricalCrossEntropy = 1
+	};
+
 	class neuralNetwork
 	{
 	public:
-		//TODO: Implement the neuralNetwork class.
+		neuralNetwork();
+		neuralNetwork(const neuralNetwork&);
+		~neuralNetwork();
+		neuralNetwork& operator=(const neuralNetwork&);
+
 	protected:
 		/*Nested abstract cell class which represents each cell in the neural network.*/
 		class cell
@@ -47,6 +56,7 @@ namespace NeuralNetwork
 
 			//Pure virutal functions:
 			virtual void backwardPropagate(std::list < std::vector<float>>&, int, std::list<std::vector<float>>&, std::mutex&) = 0;
+			virtual void copy(cell*&) = 0;
 			virtual void forwardPropagate(std::list < std::vector<float>>&, int) = 0;
 		protected:
 			//Whether the error needs to be back propagated further.
@@ -73,6 +83,8 @@ namespace NeuralNetwork
 			 *the weights to each connection is updated before returning the error of this cell to
 			 *zero.*/
 			void backwardPropagate(std::list < std::vector<float>>&, int, std::list<std::vector<float>>&, std::mutex&);
+			/*Creates a copy of the object and returns the copy in a pointer.*/
+			void copy(cell*&);
 			/*Uses the values from the cells that this neuron is connected to calculate the value of 
 			 *this neuron.*/
 			void forwardPropagate(std::list < std::vector<float>>&, int);
@@ -117,6 +129,9 @@ namespace NeuralNetwork
 		};
 
 	private:
+		int inputNodes;
+		int outputNodes;
+		std::list<std::list<cell*>> schedule;
 	};
 
 }

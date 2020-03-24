@@ -10,6 +10,11 @@ void testNeuralNetwork::testCell::backwardPropagate(std::list<std::vector<float>
 {
 }
 
+void testNeuralNetwork::testCell::copy(cell *&ptr)
+{
+
+}
+
 void testNeuralNetwork::testCell::forwardPropagate(std::list<std::vector<float>> &x, int a)
 {
 }
