@@ -45,10 +45,10 @@ namespace NeuralNetwork
 			 *with that index already exists.*/
 			virtual bool addConnection(int);
 			/*Checks a vector of all indexes that can update and returns whether it can update.*/
-			bool canUpdate(const std::vector<bool>&);
-			void getConnections(std::list<int>&);
-			int getIndex();
-			bool getPropagateFurther();
+			bool canUpdate(const std::vector<bool>&) const;
+			void getConnections(std::list<int>&) const;
+			int getIndex() const;
+			bool getPropagateFurther() const;
 			/*Attempts to remove a connection with the given index. Will return false if a connection
 			 *doesn't exist with index already.*/
 			virtual bool removeConnection(int);
@@ -56,7 +56,7 @@ namespace NeuralNetwork
 
 			//Pure virutal functions:
 			virtual void backwardPropagate(std::list < std::vector<float>>&, int, std::list<std::vector<float>>&, std::mutex&) = 0;
-			virtual void copy(cell*&) = 0;
+			virtual void copy(cell*&) const = 0;
 			virtual void forwardPropagate(std::list < std::vector<float>>&, int) = 0;
 		protected:
 			//Whether the error needs to be back propagated further.
@@ -84,19 +84,19 @@ namespace NeuralNetwork
 			 *zero.*/
 			void backwardPropagate(std::list < std::vector<float>>&, int, std::list<std::vector<float>>&, std::mutex&);
 			/*Creates a copy of the object and returns the copy in a pointer.*/
-			void copy(cell*&);
+			void copy(cell*&) const;
 			/*Uses the values from the cells that this neuron is connected to calculate the value of 
 			 *this neuron.*/
 			void forwardPropagate(std::list < std::vector<float>>&, int);
-			activationFunctionInfo getActivationFunction();
-			float getBias();
-			float getDropRatePercent();
-			float getLearningRate();
-			float getMomentum();
-			float getPreviousBiasChange();
-			void getPreviousWeightChanges(std::list<float>&);
-			float getWeightDecay();
-			void getWeights(std::list<float>&);
+			activationFunctionInfo getActivationFunction() const;
+			float getBias() const;
+			float getDropRatePercent() const;
+			float getLearningRate() const;
+			float getMomentum() const;
+			float getPreviousBiasChange() const;
+			void getPreviousWeightChanges(std::list<float>&) const;
+			float getWeightDecay() const;
+			void getWeights(std::list<float>&) const;
 			/*Attempts to remove a connection to the given index. Returns false if one isn't found*/
 			bool removeConnection(int);
 			void setBias(float);
@@ -104,9 +104,9 @@ namespace NeuralNetwork
 			void setLearningRate(float);
 			void setMomentum(float);
 			void setPreviousBiasChange(float);
-			void setPreviousWeightChanges(std::list<float>&);
+			void setPreviousWeightChanges(const std::list<float>&);
 			void setWeightDecay(float);
-			void setWeights(std::list<float>&);
+			void setWeights(const std::list<float>&);
 
 		private:
 			//The bundle of the activation function used by this neuron.

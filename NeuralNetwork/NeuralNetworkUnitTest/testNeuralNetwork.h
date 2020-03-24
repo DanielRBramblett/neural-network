@@ -13,7 +13,7 @@ public:
 	public:
 		testCell(bool, int);
 		void backwardPropagate(std::list < std::vector<float>>&, int, std::list<std::vector<float>>&, std::mutex&);
-		void copy(cell*&);
+		void copy(cell*&) const;
 		void forwardPropagate(std::list < std::vector<float>>&, int);
 	};
 

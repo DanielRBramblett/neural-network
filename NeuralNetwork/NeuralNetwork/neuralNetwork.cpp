@@ -55,7 +55,7 @@ namespace NeuralNetwork
 	}
 
 	//Checks a vector of booleans of cells that are able to be updated to see if it can update.
-	bool neuralNetwork::cell::canUpdate(const std::vector<bool> &updateVec)
+	bool neuralNetwork::cell::canUpdate(const std::vector<bool> &updateVec) const
 	{
 		bool output = true;
 		for (int currentConnection : connections)
@@ -76,18 +76,18 @@ namespace NeuralNetwork
 	}
 
 	//Copies the index of all the connections to this cell to an inputted list.
-	void neuralNetwork::cell::getConnections(std::list<int> &output)
+	void neuralNetwork::cell::getConnections(std::list<int> &output) const
 	{
 		output = connections;
 	}
 
-	int neuralNetwork::cell::getIndex()
+	int neuralNetwork::cell::getIndex() const
 	{
 		return cellIndex;
 	}
 
 	//Outputs whether this cell will backpropagate the error further.
-	bool neuralNetwork::cell::getPropagateFurther()
+	bool neuralNetwork::cell::getPropagateFurther() const
 	{
 		return backPropagateFurther;
 	}
@@ -368,7 +368,7 @@ namespace NeuralNetwork
 		}
 	}
 
-	void neuralNetwork::neuron::copy(cell *&target)
+	void neuralNetwork::neuron::copy(cell *&target) const
 	{
 		//TODO: Add an exception if a non-null pointer is given.
 		if (!target)
@@ -477,47 +477,47 @@ namespace NeuralNetwork
 		*cellValueIt = cellBatchValues;
 	}
 
-	activationFunctionInfo neuralNetwork::neuron::getActivationFunction()
+	activationFunctionInfo neuralNetwork::neuron::getActivationFunction() const
 	{
 		return actFunc;
 	}
 
-	float neuralNetwork::neuron::getBias()
+	float neuralNetwork::neuron::getBias() const
 	{
 		return bias;
 	}
 
-	float neuralNetwork::neuron::getDropRatePercent()
+	float neuralNetwork::neuron::getDropRatePercent() const
 	{
 		return dropRatePercent;
 	}
 
-	float neuralNetwork::neuron::getLearningRate()
+	float neuralNetwork::neuron::getLearningRate() const
 	{
 		return learningRate;
 	}
 
-	float neuralNetwork::neuron::getMomentum()
+	float neuralNetwork::neuron::getMomentum() const
 	{
 		return momentum;
 	}
 
-	float neuralNetwork::neuron::getPreviousBiasChange()
+	float neuralNetwork::neuron::getPreviousBiasChange() const
 	{
 		return previousBiasChange;
 	}
 
-	void neuralNetwork::neuron::getPreviousWeightChanges(std::list<float> &output)
+	void neuralNetwork::neuron::getPreviousWeightChanges(std::list<float> &output) const
 	{
 		output = previousWeightChange;
 	}
 
-	float neuralNetwork::neuron::getWeightDecay()
+	float neuralNetwork::neuron::getWeightDecay() const
 	{
 		return weightDecay;
 	}
 
-	void neuralNetwork::neuron::getWeights(std::list<float> &output)
+	void neuralNetwork::neuron::getWeights(std::list<float> &output) const
 	{
 		output = connectionWeights;
 	}
@@ -627,7 +627,7 @@ namespace NeuralNetwork
 		previousBiasChange = newBiasChange;
 	}
 
-	void neuralNetwork::neuron::setPreviousWeightChanges(std::list<float> &ref)
+	void neuralNetwork::neuron::setPreviousWeightChanges(const std::list<float> &ref)
 	{
 #if SAFE_CELL
 		if (ref.size() != previousWeightChange.size())
@@ -649,7 +649,7 @@ namespace NeuralNetwork
 		weightDecay = newWeightDecay;
 	}
 
-	void neuralNetwork::neuron::setWeights(std::list<float> &ref)
+	void neuralNetwork::neuron::setWeights(const std::list<float> &ref)
 	{
 #if SAFE_CELL
 		if (ref.size() != connectionWeights.size())
